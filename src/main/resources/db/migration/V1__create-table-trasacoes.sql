@@ -1,0 +1,9 @@
+CREATE TABLE transacoes(
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	ticker VARCHAR(6) NOT NULL,
+	data DATE NOT NULL,
+	preco DECIMAL(18,2) NOT NULL,
+	quantidade INT NOT NULL,
+	tipo VARCHAR (100) NOT NULL,
+	PRIMARY KEY (id)
+);

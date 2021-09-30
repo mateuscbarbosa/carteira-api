@@ -23,7 +23,7 @@ public class Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idUsuario;
+	private Long Id;
 	private String nome;
 	private String login;
 	private String senha;

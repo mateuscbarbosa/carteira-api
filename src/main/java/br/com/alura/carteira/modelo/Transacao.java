@@ -29,7 +29,7 @@ public class Transacao {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idTransacao;
+	private Long Id;
 	private String ticker;
 	private LocalDate data;
 	private BigDecimal preco;
