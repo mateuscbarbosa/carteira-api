@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.alura.carteira.dto.UsuarioFormDto;
 import br.com.alura.carteira.dto.UsuarioOutputDto;
@@ -25,13 +26,15 @@ public class UsuarioService {
 		return usuarios.map(u -> modelMapper.map(u, UsuarioOutputDto.class));
 	}
 
-	public void cadastrar(UsuarioFormDto usuarioFormDto) {
+	@Transactional
+	public UsuarioOutputDto cadastrar(UsuarioFormDto usuarioFormDto) {
 		Usuario usuario = modelMapper.map(usuarioFormDto, Usuario.class);
 		
 		String senha = new Random().nextInt(999999) +"";
 		usuario.setSenha(senha);
 		
 		usuarioRepository.save(usuario);
+		return modelMapper.map(usuario, UsuarioOutputDto.class);
 	}
 	
 }

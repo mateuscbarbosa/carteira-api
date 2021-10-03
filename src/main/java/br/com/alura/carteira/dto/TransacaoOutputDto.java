@@ -10,9 +10,10 @@ import lombok.Setter;
 @Setter
 public class TransacaoOutputDto {
 
+	private Long id;
 	private String ticker;
 	private BigDecimal preco;
-	private int quantidade;
+	private Integer quantidade;
 	private TipoTransacao tipo;
 
 }
