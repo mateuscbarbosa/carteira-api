@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
@@ -36,6 +37,7 @@ public class TransacaoFormDto {
 	private BigDecimal preco;
 	
 	@NotNull
+	@Min(1)
 	private int quantidade;
 	
 	@NotNull
