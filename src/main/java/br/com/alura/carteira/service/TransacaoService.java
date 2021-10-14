@@ -44,6 +44,7 @@ public class TransacaoService {
 			transacao.setUsuario(usuario);
 			
 			transacaoRepository.save(transacao);
+			
 			return modelMapper.map(transacao, TransacaoOutputDto.class);
 		}catch(EntityNotFoundException e) {
 			throw new IllegalArgumentException("Usuário inexistente.");
