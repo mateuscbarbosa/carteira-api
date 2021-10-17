@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.alura.carteira.dto.TransacaoFormDto;
 import br.com.alura.carteira.dto.TransacaoOutputDto;
 import br.com.alura.carteira.modelo.Transacao;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("/transacoesantiga")
+@ApiIgnore
 public class TransacaoControllerAntiga {
 
 	private List<Transacao> transacoes = new ArrayList<>();

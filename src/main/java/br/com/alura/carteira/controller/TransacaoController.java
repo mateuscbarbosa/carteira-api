@@ -19,21 +19,26 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.alura.carteira.dto.TransacaoFormDto;
 import br.com.alura.carteira.dto.TransacaoOutputDto;
 import br.com.alura.carteira.service.TransacaoService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/transacoes")
+@Api(tags = "Transações")
 public class TransacaoController {
 
 	@Autowired
 	private TransacaoService service;
 	
 	@GetMapping
+	@ApiOperation("Listar Transações registradas")
 	public Page<TransacaoOutputDto> listar(@PageableDefault(size = 10) Pageable paginacao) {
 		return service.listar(paginacao);
 		
 	}
 	
 	@PostMapping
+	@ApiOperation("Cadastrar nova Transação")
 	public ResponseEntity<TransacaoOutputDto> cadastrar(@RequestBody @Valid TransacaoFormDto transacaoFormDto, UriComponentsBuilder uriBuilder) {
 		TransacaoOutputDto transacaoOutputDto= service.cadastrar(transacaoFormDto);
 		
