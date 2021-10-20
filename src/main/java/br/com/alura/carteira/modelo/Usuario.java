@@ -33,5 +33,13 @@ public class Usuario {
 		this.login = login;
 		this.senha = senha;
 	}
+
+	public void atualizarInformacoes(Long id, String nome, String login, String senha) {
+		this.Id = id;
+		this.nome = nome;
+		this.login = login;
+		this.senha = senha;
+		
+	}
 	
 }
