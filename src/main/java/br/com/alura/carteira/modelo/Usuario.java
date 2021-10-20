@@ -34,8 +34,7 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public void atualizarInformacoes(Long id, String nome, String login, String senha) {
-		this.Id = id;
+	public void atualizarInformacoes(String nome, String login, String senha) {
 		this.nome = nome;
 		this.login = login;
 		this.senha = senha;

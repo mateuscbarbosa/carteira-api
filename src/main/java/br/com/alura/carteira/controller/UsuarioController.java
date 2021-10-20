@@ -61,6 +61,7 @@ public class UsuarioController {
 	@ApiOperation("Remover Usuário selecionado")
 	public ResponseEntity<UsuarioOutputDto> remover(@PathVariable @NotNull Long id){
 		service.remover(id);
+		
 		return ResponseEntity.noContent().build();
 	}
 	

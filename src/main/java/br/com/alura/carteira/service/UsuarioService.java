@@ -44,7 +44,7 @@ public class UsuarioService {
 	public UsuarioOutputDto atualizar(AtualizacaoUsuarioFormDto usuarioFormDto) {
 		Usuario usuario = usuarioRepository.getById(usuarioFormDto.getId());
 		
-		usuario.atualizarInformacoes(usuarioFormDto.getId(), usuarioFormDto.getNome(), usuarioFormDto.getLogin(), usuarioFormDto.getSenha());
+		usuario.atualizarInformacoes(usuarioFormDto.getNome(), usuarioFormDto.getLogin(), usuarioFormDto.getSenha());
 		
 		return modelMapper.map(usuario, UsuarioOutputDto.class);
 	}
@@ -54,7 +54,7 @@ public class UsuarioService {
 		usuarioRepository.deleteById(id);
 	}
 
-	public UsuarioOutputDto detalhar( Long id) {
+	public UsuarioOutputDto detalhar(Long id) {
 		Usuario usuario = usuarioRepository
 				.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException());
