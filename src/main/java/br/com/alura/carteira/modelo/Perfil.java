@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import lombok.ToString;
 
 @Getter
 @Setter
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString

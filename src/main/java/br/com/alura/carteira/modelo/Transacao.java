@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +22,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode(of = "id")
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -29,7 +31,7 @@ public class Transacao {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long Id;
+	private Long id;
 	private String ticker;
 	private LocalDate data;
 	private BigDecimal preco;
@@ -58,6 +60,10 @@ public class Transacao {
 				this.preco = preco;
 				this.quantidade = quantidade;
 				this.tipo = tipo;
+	}
+
+	public boolean pertenceAoUsuario(Usuario usuario) {
+		return this.usuario.equals(usuario);
 	}
 
 	

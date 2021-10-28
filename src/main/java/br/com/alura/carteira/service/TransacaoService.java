@@ -1,12 +1,12 @@
 package br.com.alura.carteira.service;
 
 import javax.persistence.EntityNotFoundException;
-import javax.validation.constraints.NotNull;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,17 +31,22 @@ public class TransacaoService {
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	public Page<TransacaoOutputDto> listar(Pageable paginacao) {
-		Page<Transacao> transacoes = transacaoRepository.findAll(paginacao);
-		return transacoes.map(t -> modelMapper.map(t, TransacaoOutputDto.class));
+	public Page<TransacaoOutputDto> listar(Pageable paginacao, Usuario usuario) {
+		return transacaoRepository
+				.findAllByUsuario(paginacao, usuario)
+				.map(t -> modelMapper.map(t, TransacaoOutputDto.class));
 	}
 
 	@Transactional
-	public TransacaoOutputDto cadastrar(TransacaoFormDto transasaoFormDto) {
+	public TransacaoOutputDto cadastrar(TransacaoFormDto transasaoFormDto, Usuario logado) {
 		Long idUsuario = transasaoFormDto.getUsuarioId();
 		
 		try {
 			Usuario usuario = usuarioRepository.getById(idUsuario);
+			
+			if(!usuario.equals(logado)) {
+				lancarExceptionAcessoNegado();
+			}
 			
 			Transacao transacao = modelMapper.map(transasaoFormDto, Transacao.class);
 			transacao.setId(null);
@@ -57,8 +62,12 @@ public class TransacaoService {
 	}
 
 	@Transactional
-	public TransacaoOutputDto atualizar(AtulizacaoTransacaoFormDto transacaoFormDto) {
+	public TransacaoOutputDto atualizar(AtulizacaoTransacaoFormDto transacaoFormDto, Usuario logado) {
 		Transacao transacao = transacaoRepository.getById(transacaoFormDto.getId());
+		
+		if(!transacao.pertenceAoUsuario(logado)) {
+			lancarExceptionAcessoNegado();
+		}
 		
 		transacao.atualizarInformacoes(transacaoFormDto.getTicker(), transacaoFormDto.getData(), transacaoFormDto.getPreco(), transacaoFormDto.getQuantidade(), transacaoFormDto.getTipo());
 		
@@ -66,17 +75,30 @@ public class TransacaoService {
 	}
 
 	@Transactional
-	public void remover(Long id) {
+	public void remover(Long id, Usuario logado) {
+		Transacao transacao = transacaoRepository.getById(id);
+		
+		if(!transacao.pertenceAoUsuario(logado)) {
+			lancarExceptionAcessoNegado();
+		}
+		
 		transacaoRepository.deleteById(id);
 	}
 	
-	public TransacaoDetalhadaOutputDto detalhar(@NotNull Long id) {
+	public TransacaoDetalhadaOutputDto detalhar(Long id, Usuario logado) {
 		Transacao transacao = transacaoRepository
 				.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException());
 		
+		if(!transacao.pertenceAoUsuario(logado)) {
+			lancarExceptionAcessoNegado();
+		}
+		
 		return modelMapper.map(transacao, TransacaoDetalhadaOutputDto.class);
 	}
 	
+	private void lancarExceptionAcessoNegado() {
+		throw new AccessDeniedException("Acesso negado!");
+	}
 	
 }
