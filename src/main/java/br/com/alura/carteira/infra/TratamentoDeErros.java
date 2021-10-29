@@ -31,6 +31,12 @@ public class TratamentoDeErros {
 				.collect(Collectors.toList());
 	}
 	
+	@ExceptionHandler(RegraDeNegocioException.class)
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	public String tratarErroRegrasDeNegocio(RegraDeNegocioException ex){
+		return ex.getMessage();
+	}
+	
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
 	public Erro500OutputDto tratarErro500(Exception ex, HttpServletRequest req) {

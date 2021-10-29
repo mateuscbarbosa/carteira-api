@@ -15,9 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.alura.carteira.dto.AtualizacaoUsuarioFormDto;
 import br.com.alura.carteira.dto.UsuarioFormDto;
 import br.com.alura.carteira.dto.UsuarioOutputDto;
+import br.com.alura.carteira.infra.RegraDeNegocioException;
 import br.com.alura.carteira.modelo.Perfil;
 import br.com.alura.carteira.modelo.Usuario;
 import br.com.alura.carteira.repository.PerfilRepository;
+import br.com.alura.carteira.repository.TransacaoRepository;
 import br.com.alura.carteira.repository.UsuarioRepository;
 
 @Service
@@ -28,6 +30,9 @@ public class UsuarioService {
 	
 	@Autowired
 	private PerfilRepository perfilRepository;
+	
+	@Autowired
+	private TransacaoRepository transacaoRepository;
 	
 	@Autowired
 	private ModelMapper modelMapper;
@@ -65,6 +70,10 @@ public class UsuarioService {
 
 	@Transactional
 	public void remover(Long id) {
+		boolean temTransacaoesCadastradas = transacaoRepository.existsByUsuarioId(id);
+		if(temTransacaoesCadastradas) {
+			throw new RegraDeNegocioException("Usuario possuí Transações cadastradas. Não pode ser excluído!");
+		}
 		usuarioRepository.deleteById(id);
 	}
 
