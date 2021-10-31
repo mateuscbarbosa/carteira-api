@@ -1,5 +1,7 @@
 package br.com.alura.carteira.service;
 
+import java.math.BigDecimal;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
@@ -29,12 +31,26 @@ public class TransacaoService {
 	private UsuarioRepository usuarioRepository;
 	
 	@Autowired
+	private CalculadoraDeImpostoService calculadoraDeImpostoService;
+	
+	@Autowired
 	private ModelMapper modelMapper;
 	
 	public Page<TransacaoOutputDto> listar(Pageable paginacao, Usuario usuario) {
 		return transacaoRepository
 				.findAllByUsuario(paginacao, usuario)
 				.map(t -> modelMapper.map(t, TransacaoOutputDto.class));
+//		Page<Transacao> transacoes = transacaoRepository.findAllByUsuario(paginacao, usuario);
+//		
+//		List<TransacaoOutputDto> transacoesDto = new ArrayList<>();
+//		transacoes.forEach(transacao -> {
+//			BigDecimal imposto = calculadoraDeImpostoService.calcular(transacao);
+//			TransacaoOutputDto dto = modelMapper.map(transacao, TransacaoOutputDto.class);
+//			dto.setImposto(imposto);
+//			transacoesDto.add(dto);
+//		});
+//		
+//		return new PageImpl<TransacaoOutputDto>(transacoesDto, transacoes.getPageable(),transacoes.getTotalElements());
 	}
 
 	@Transactional
@@ -51,6 +67,8 @@ public class TransacaoService {
 			Transacao transacao = modelMapper.map(transasaoFormDto, Transacao.class);
 			transacao.setId(null);
 			transacao.setUsuario(usuario);
+			BigDecimal imposto = calculadoraDeImpostoService.calcular(transacao);
+			transacao.setImposto(imposto);
 			
 			transacaoRepository.save(transacao);
 			

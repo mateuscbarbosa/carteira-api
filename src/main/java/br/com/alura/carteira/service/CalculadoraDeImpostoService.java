@@ -2,9 +2,12 @@ package br.com.alura.carteira.service;
 
 import java.math.BigDecimal;
 
+import org.springframework.stereotype.Service;
+
 import br.com.alura.carteira.modelo.TipoTransacao;
 import br.com.alura.carteira.modelo.Transacao;
 
+@Service
 public class CalculadoraDeImpostoService {
 
 	public BigDecimal calcular(Transacao transacao) {

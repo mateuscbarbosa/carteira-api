@@ -29,6 +29,7 @@ import br.com.alura.carteira.modelo.Usuario;
 import br.com.alura.carteira.service.TransacaoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("/transacoes")
@@ -40,13 +41,13 @@ public class TransacaoController {
 	
 	@GetMapping
 	@ApiOperation("Listar Transações registradas")
-	public Page<TransacaoOutputDto> listar(@PageableDefault(size = 10) Pageable paginacao, @AuthenticationPrincipal Usuario logado) {
+	public Page<TransacaoOutputDto> listar(@PageableDefault(size = 10) Pageable paginacao, @ApiIgnore @AuthenticationPrincipal Usuario logado) {
 		return service.listar(paginacao, logado);
 	}
 	
 	@PostMapping
 	@ApiOperation("Cadastrar nova Transação")
-	public ResponseEntity<TransacaoOutputDto> cadastrar(@RequestBody @Valid TransacaoFormDto transacaoFormDto, UriComponentsBuilder uriBuilder, @AuthenticationPrincipal Usuario logado) {
+	public ResponseEntity<TransacaoOutputDto> cadastrar(@RequestBody @Valid TransacaoFormDto transacaoFormDto, UriComponentsBuilder uriBuilder, @ApiIgnore @AuthenticationPrincipal Usuario logado) {
 		TransacaoOutputDto transacaoOutputDto= service.cadastrar(transacaoFormDto, logado);
 		
 		URI uri = uriBuilder.path("/transacoes/{id}").buildAndExpand(transacaoOutputDto.getId()).toUri();
@@ -55,7 +56,7 @@ public class TransacaoController {
 	
 	@PutMapping
 	@ApiOperation("Atualizar Transação selecionada")
-	public ResponseEntity<TransacaoOutputDto> atualizar(@RequestBody @Valid AtulizacaoTransacaoFormDto transacaoFormDto, @AuthenticationPrincipal Usuario logado){
+	public ResponseEntity<TransacaoOutputDto> atualizar(@RequestBody @Valid AtulizacaoTransacaoFormDto transacaoFormDto, @ApiIgnore @AuthenticationPrincipal Usuario logado){
 		TransacaoOutputDto transacaoOutputDto = service.atualizar(transacaoFormDto, logado);
 		
 		return ResponseEntity.ok(transacaoOutputDto);
@@ -63,7 +64,7 @@ public class TransacaoController {
 	
 	@DeleteMapping("/{id}")
 	@ApiOperation("Remover Transacao selecionada")
-	public ResponseEntity<TransacaoOutputDto> remover(@PathVariable @NotNull Long id, @AuthenticationPrincipal Usuario logado){
+	public ResponseEntity<TransacaoOutputDto> remover(@PathVariable @NotNull Long id, @ApiIgnore @AuthenticationPrincipal Usuario logado){
 		service.remover(id, logado);
 		
 		return ResponseEntity.noContent().build();
@@ -71,7 +72,7 @@ public class TransacaoController {
 	
 	@GetMapping("/{id}")
 	@ApiOperation("Transação Detalhada")
-	public ResponseEntity<TransacaoDetalhadaOutputDto> detalhar(@PathVariable @NotNull Long id, @AuthenticationPrincipal Usuario logado){
+	public ResponseEntity<TransacaoDetalhadaOutputDto> detalhar(@PathVariable @NotNull Long id, @ApiIgnore @AuthenticationPrincipal Usuario logado){
 		TransacaoDetalhadaOutputDto transacaoOutputDto = service.detalhar(id, logado);
 		
 		return ResponseEntity.ok(transacaoOutputDto);
