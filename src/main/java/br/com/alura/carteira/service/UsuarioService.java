@@ -54,6 +54,7 @@ public class UsuarioService {
 				
 		String senha = new Random().nextInt(999999) +"";
 		usuario.setSenha(bCryptPasswordEncoder.encode(senha));
+		usuario.setId(null);
 		
 		usuarioRepository.save(usuario);
 		return modelMapper.map(usuario, UsuarioOutputDto.class);
@@ -63,7 +64,9 @@ public class UsuarioService {
 	public UsuarioOutputDto atualizar(AtualizacaoUsuarioFormDto usuarioFormDto) {
 		Usuario usuario = usuarioRepository.getById(usuarioFormDto.getId());
 		
-		usuario.atualizarInformacoes(usuarioFormDto.getNome(), usuarioFormDto.getLogin(), bCryptPasswordEncoder.encode(usuarioFormDto.getSenha()));
+		usuario.atualizarInformacoes(usuarioFormDto.getNome(),
+									 usuarioFormDto.getLogin(),
+									 bCryptPasswordEncoder.encode(usuarioFormDto.getSenha()));
 		
 		return modelMapper.map(usuario, UsuarioOutputDto.class);
 	}
