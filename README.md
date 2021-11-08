@@ -49,5 +49,5 @@ Algumas observações sobre isso:
 
 ## Autores
 * Professores: Rodrigo Caneppele & Rita Cury
-| [<img src="https://avatars.githubusercontent.com/u/37356058?v=4" width=115><br><sub>Mateus C Barbosa</sub>](https://github.com/mateuscbarbosa)
+| <br><sub>Mateus C Barbosa</sub>](https://github.com/mateuscbarbosa)
 
