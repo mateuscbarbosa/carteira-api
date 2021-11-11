@@ -24,4 +24,4 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       
       - name: Executar os testes
-        run: mvn clean teste --file pom.xml
+        run: mvn clean test --file pom.xml
