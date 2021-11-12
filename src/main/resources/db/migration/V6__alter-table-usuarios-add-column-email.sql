@@ -1,0 +1,1 @@
+ALTER TABLE usuarios ADD email VARCHAR(100) UNIQUE;

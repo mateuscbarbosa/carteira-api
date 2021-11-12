@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.alura.carteira.dto.AtualizacaoUsuarioFormDto;
 import br.com.alura.carteira.dto.UsuarioFormDto;
 import br.com.alura.carteira.dto.UsuarioOutputDto;
+import br.com.alura.carteira.infra.EnviadorDeEmail;
 import br.com.alura.carteira.infra.RegraDeNegocioException;
 import br.com.alura.carteira.modelo.Perfil;
 import br.com.alura.carteira.modelo.Usuario;
@@ -40,6 +41,9 @@ public class UsuarioService {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
+	@Autowired
+	private EnviadorDeEmail enviadorDeEmail;
+	
 	public Page<UsuarioOutputDto> listar(Pageable paginacao) {
 		Page<Usuario> usuarios = usuarioRepository.findAll(paginacao);
 		return usuarios.map(u -> modelMapper.map(u, UsuarioOutputDto.class));
@@ -57,6 +61,15 @@ public class UsuarioService {
 		usuario.setId(null);
 		
 		usuarioRepository.save(usuario);
+		
+		String destinatario = usuario.getEmail();
+		String assunto = "Carteira - Bem Vindo(a)!";
+		String mensagem = String.format("Olá %s\n\n"
+				+ "Seguem seus dados de acesso ao sistema.\n\n"
+				+ "Login:%s\n"
+				+ "Senha:%s", usuario.getNome(),usuario.getLogin(),senha); //timelief
+		enviadorDeEmail.enviarEmail(destinatario , assunto, mensagem);
+		
 		return modelMapper.map(usuario, UsuarioOutputDto.class);
 	}
 
